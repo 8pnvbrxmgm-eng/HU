@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudentHub — Ton univers étudiant, au même endroit.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#f6f4fd;
+    --bg-soft-2:#eeeafc;
+    --ink:#181433;
+    --ink-soft:#6c6785;
+    --ink-faint:#a29dbd;
+    --violet:#6c4cf5;
+    --violet-deep:#4a2fd6;
+    --violet-pale:#efeaff;
+    --blue:#3d7cfa;
+    --blue-pale:#e9f1ff;
+    --line:#e6e2f7;
+    --success:#1aa267;
+    --success-pale:#e5f7ee;
+    --amber:#e08a2c;
+    --amber-pale:#fbf0df;
+    --radius-l:22px;
+    --radius-m:14px;
+    --radius-s:9px;
+    --shadow:0 20px 45px -20px rgba(76,49,214,0.28);
+    --shadow-sm:0 8px 20px -12px rgba(76,49,214,0.25);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{overflow-x:hidden;width:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.02em;
+    margin:0;
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  section{padding:110px 0;}
+  @media (max-width:720px){
+    section{padding:70px 0;}
+    .wrap{padding:0 20px;}
+  }
+
+  /* ---------- utility ---------- */
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;letter-spacing:0.09em;text-transform:uppercase;
+    color:var(--violet-deep);
+    background:var(--violet-pale);
+    padding:6px 12px;border-radius:100px;
+    margin-bottom:18px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--violet);}
+  .section-head{max-width:600px;margin-bottom:52px;}
+  .section-head h2{font-size:clamp(28px,3.4vw,38px);font-weight:600;}
+  .section-head p{color:var(--ink-soft);font-size:16.5px;line-height:1.6;margin-top:14px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:13px 26px;border-radius:100px;font-weight:600;font-size:15px;
+    cursor:pointer;border:none;transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    font-family:'Inter',sans-serif;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--violet),var(--blue));
+    color:#fff;box-shadow:var(--shadow-sm);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 28px -12px rgba(76,49,214,0.45);}
+  .btn-ghost{
+    background:transparent;color:var(--ink);border:1.5px solid var(--line);
+  }
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet-deep);}
+  .btn-sm{padding:9px 18px;font-size:13.5px;}
+  .card{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+  }
+  .pill{
+    display:inline-block;padding:4px 11px;border-radius:100px;
+    font-size:11.5px;font-weight:600;font-family:'IBM Plex Mono',monospace;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    max-width:1180px;margin:0 auto;padding:16px 32px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:19px;font-family:'Space Grotesk',sans-serif;}
+  .logo-mark{
+    width:26px;height:26px;border-radius:8px;
+    background:linear-gradient(135deg,var(--violet),var(--blue));
+    position:relative;flex-shrink:0;
+  }
+  .logo-mark::after{
+    content:"";position:absolute;inset:6px;border-radius:3px;background:#fff;opacity:.9;
+  }
+  .nav-links{display:flex;gap:34px;font-size:14.5px;font-weight:500;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--violet-deep);}
+  .nav-actions{display:flex;gap:10px;align-items:center;}
+  .menu-btn{
+    display:none;width:38px;height:38px;border-radius:9px;border:1.5px solid var(--line);
+    background:#fff;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;
+    padding:0;
+  }
+  .menu-btn span{position:relative;width:16px;height:12px;display:block;}
+  .menu-btn span::before,.menu-btn span::after,.menu-btn span i{
+    content:"";position:absolute;left:0;width:100%;height:1.6px;background:var(--ink);border-radius:2px;
+    transition:transform .2s ease, opacity .2s ease, top .2s ease;
+  }
+  .menu-btn span::before{top:0;}
+  .menu-btn span i{top:5px;display:block;position:absolute;}
+  .menu-btn span::after{top:10px;}
+  .menu-btn.open span::before{top:5px;transform:rotate(45deg);}
+  .menu-btn.open span i{opacity:0;}
+  .menu-btn.open span::after{top:5px;transform:rotate(-45deg);}
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .nav-actions .btn-ghost{display:none;}
+    .menu-btn{display:flex;}
+  }
+  .mobile-menu{
+    display:none;flex-direction:column;gap:2px;
+    max-height:0;overflow:hidden;
+    background:#fff;border-bottom:1px solid var(--line);
+    transition:max-height .28s ease;
+  }
+  .mobile-menu.open{max-height:420px;}
+  @media (max-width:860px){.mobile-menu{display:flex;}}
+  .mobile-menu a.mm-link{
+    padding:14px 32px;font-size:15px;font-weight:500;color:var(--ink);border-top:1px solid var(--line);
+  }
+  .mobile-menu .mm-actions{display:flex;flex-direction:column;gap:10px;padding:16px 32px 22px;}
+  .mobile-menu .btn{width:100%;}
+
+  /* ---------- hero ---------- */
+  .hero{padding:96px 0 60px;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:64px;align-items:center;}
+  @media (max-width:920px){.hero-grid{grid-template-columns:1fr;}}
+  .hero h1{
+    font-size:clamp(38px,5.2vw,58px);
+    font-weight:700;line-height:1.06;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(135deg,var(--violet),var(--blue));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.lead{
+    margin-top:22px;font-size:17.5px;line-height:1.65;color:var(--ink-soft);max-width:480px;
+  }
+  .hero-cta{display:flex;gap:14px;margin-top:34px;align-items:center;flex-wrap:wrap;}
+  @media (max-width:480px){.hero-cta .btn{width:100%;}}
+  .hero-note{margin-top:16px;font-size:13px;color:var(--ink-faint);}
+
+  /* signature: floating dashboard stack */
+  .stack{position:relative;height:440px;}
+  .stack-card{
+    position:absolute;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius-m);box-shadow:var(--shadow);padding:20px 22px;
+    animation:rise .7s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+  .stack-card.main{
+    width:78%;top:6%;left:2%;z-index:3;animation-delay:.05s;
+  }
+  .stack-card.sub{
+    width:64%;bottom:4%;right:0;z-index:2;animation-delay:.22s;
+    background:var(--violet-pale);border-color:var(--violet-pale);
+  }
+  .stack-card.mini{
+    width:46%;top:48%;left:-4%;z-index:4;animation-delay:.38s;
+  }
+  .stack-title{font-size:12px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;margin-bottom:12px;}
+  .stack-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);font-size:14px;}
+  .stack-row:first-of-type{border-top:none;}
+  .ring{
+    width:64px;height:64px;border-radius:50%;
+    background:conic-gradient(var(--violet) 0turn, var(--violet) 0.68turn, var(--violet-pale) 0.68turn);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .ring-inner{
+    width:48px;height:48px;border-radius:50%;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;
+  }
+
+  /* quick features row */
+  .quick-features{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:var(--radius-m);
+    overflow:hidden;margin-top:88px;
+  }
+  @media (max-width:860px){.quick-features{grid-template-columns:repeat(2,1fr);}}
+  .qf-item{background:#fff;padding:26px 22px;}
+  .qf-item .ic{
+    width:34px;height:34px;border-radius:9px;background:var(--violet-pale);
+    display:flex;align-items:center;justify-content:center;color:var(--violet-deep);margin-bottom:14px;
+  }
+  .qf-item h4{font-size:14.5px;font-weight:600;margin-bottom:5px;}
+  .qf-item p{font-size:12.8px;color:var(--ink-soft);line-height:1.5;margin:0;}
+
+  /* ---------- dashboard section ---------- */
+  .dash-shell{
+    background:var(--bg-soft);border:1px solid var(--line);border-radius:28px;
+    padding:44px;
+  }
+  @media (max-width:720px){.dash-shell{padding:26px;border-radius:20px;}}
+  .dash-greet{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:34px;flex-wrap:wrap;gap:14px;}
+  .dash-greet h3{font-size:26px;font-weight:600;}
+  .dash-greet p{color:var(--ink-soft);margin-top:6px;font-size:14.5px;}
+  .avatar{
+    width:42px;height:42px;border-radius:50%;
+    background:linear-gradient(135deg,var(--blue),var(--violet));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-family:'Space Grotesk',sans-serif;
+  }
+  .dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media (max-width:920px){.dash-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.dash-grid{grid-template-columns:1fr;}}
+  .dash-card{background:#fff;border-radius:var(--radius-m);padding:22px;border:1px solid var(--line);}
+  .dash-card .label{font-size:12px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;margin-bottom:14px;}
+  .dash-card .big{font-size:15px;font-weight:600;}
+  .dash-card .sub{font-size:12.8px;color:var(--ink-soft);margin-top:4px;}
+  .dash-card.wide{grid-column:span 2;}
+  @media (max-width:560px){.dash-card.wide{grid-column:span 1;}}
+  .bar-track{height:8px;background:var(--violet-pale);border-radius:100px;margin-top:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--violet),var(--blue));}
+  .mini-list li{list-style:none;display:flex;justify-content:space-between;font-size:13.5px;padding:6px 0;color:var(--ink);}
+  .mini-list li span:last-child{color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;font-size:12px;}
+
+  /* ---------- cours ---------- */
+  .breadcrumb-select{
+    display:flex;flex-wrap:wrap;gap:10px;margin-bottom:44px;
+  }
+  .bc-step{
+    display:flex;align-items:center;gap:8px;padding:11px 18px;border-radius:100px;
+    border:1.5px solid var(--line);font-size:14px;font-weight:500;color:var(--ink-soft);background:#fff;
+  }
+  .bc-step.active{border-color:var(--violet);color:var(--violet-deep);background:var(--violet-pale);font-weight:600;}
+  .bc-arrow{color:var(--ink-faint);font-size:13px;}
+  .resource-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+  @media (max-width:920px){.resource-grid{grid-template-columns:repeat(3,1fr);}}
+  @media (max-width:560px){.resource-grid{grid-template-columns:repeat(2,1fr);}}
+  .resource-card{
+    padding:24px 18px;text-align:left;transition:border-color .18s ease, transform .18s ease;
+  }
+  .resource-card:hover{border-color:var(--violet);transform:translateY(-3px);}
+  .resource-card .r-ic{
+    width:36px;height:36px;border-radius:10px;background:var(--blue-pale);color:var(--blue);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;
+  }
+  .resource-card h4{font-size:14.5px;font-weight:600;margin-bottom:4px;}
+  .resource-card p{font-size:12.5px;color:var(--ink-faint);margin:0;}
+
+  /* ---------- quiz ---------- */
+  .quiz-panel{display:grid;grid-template-columns:0.9fr 1.1fr;gap:0;border-radius:var(--radius-l);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-sm);}
+  @media (max-width:860px){.quiz-panel{grid-template-columns:1fr;}}
+  .quiz-config{background:var(--bg-soft);padding:40px;}
+  .quiz-config h4{font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--ink-faint);margin-bottom:20px;text-transform:uppercase;letter-spacing:.08em;}
+  .quiz-field{margin-bottom:20px;}
+  .quiz-field label{display:block;font-size:12.5px;color:var(--ink-soft);margin-bottom:8px;font-weight:500;}
+  .quiz-chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{padding:7px 14px;border-radius:100px;font-size:12.8px;background:#fff;border:1px solid var(--line);color:var(--ink-soft);}
+  .chip.sel{background:var(--violet);color:#fff;border-color:var(--violet);}
+  .quiz-result{padding:40px;background:#fff;}
+  .score-row{display:flex;align-items:center;gap:22px;margin-bottom:26px;}
+  .score-ring{
+    width:88px;height:88px;border-radius:50%;flex-shrink:0;
+    background:conic-gradient(var(--success) 0turn, var(--success) 0.85turn, var(--success-pale) 0.85turn);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .score-ring-inner{
+    width:68px;height:68px;border-radius:50%;background:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .score-ring-inner .n{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;line-height:1;}
+  .score-ring-inner .d{font-size:10px;color:var(--ink-faint);margin-top:2px;}
+  .score-meta h4{font-size:19px;font-weight:600;}
+  .score-meta p{font-size:13.5px;color:var(--ink-soft);margin-top:4px;}
+  .review-item{border-top:1px solid var(--line);padding:16px 0;}
+  .review-item:first-of-type{border-top:none;}
+  .review-q{font-size:14px;font-weight:600;margin-bottom:6px;}
+  .review-a{font-size:13px;display:flex;gap:8px;align-items:flex-start;color:var(--ink-soft);margin-bottom:4px;}
+  .review-a .x{color:#c73a3a;flex-shrink:0;}
+  .review-a .ok{color:var(--success);flex-shrink:0;}
+  .review-why{font-size:12.5px;color:var(--ink-faint);padding-left:20px;line-height:1.5;}
+
+  /* ---------- planning ---------- */
+  .plan-grid{display:grid;grid-template-columns:1.3fr 0.7fr;gap:28px;}
+  @media (max-width:860px){.plan-grid{grid-template-columns:1fr;}}
+  .cal{padding:30px;}
+  .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+  .cal-head h4{font-size:16px;font-weight:600;}
+  .cal-nav{display:flex;gap:6px;}
+  .cal-nav button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;}
+  .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:11px;color:var(--ink-faint);text-align:center;margin-bottom:8px;font-family:'IBM Plex Mono',monospace;}
+  .cal-cells{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+  .cal-cell{
+    aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-size:12.5px;color:var(--ink-soft);position:relative;background:var(--bg-soft);
+  }
+  .cal-cell.today{background:var(--violet);color:#fff;font-weight:600;}
+  .cal-cell .evt{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px;font-size:12.5px;color:var(--ink-soft);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .reminder-card{padding:26px;}
+  .reminder-card h4{font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+  .reminder-item{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line);}
+  .reminder-item:first-of-type{border-top:none;}
+  .reminder-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+  .reminder-item p{margin:0;font-size:13.5px;}
+  .reminder-item span{font-size:12px;color:var(--ink-faint);}
+
+  /* ---------- forum ---------- */
+  .thread{padding:28px 30px;}
+  .thread-head{display:flex;gap:14px;}
+  .thread-head .avatar{width:38px;height:38px;font-size:13px;}
+  .thread-body h4{font-size:15.5px;font-weight:600;margin-bottom:6px;}
+  .thread-meta{font-size:12.5px;color:var(--ink-faint);margin-bottom:14px;}
+  .thread-question{font-size:14.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;}
+  .reply{display:flex;gap:12px;padding:16px 0;border-top:1px solid var(--line);}
+  .reply .avatar{width:32px;height:32px;font-size:11.5px;}
+  .reply-body{flex:1;}
+  .reply-body p{margin:0 0 8px;font-size:13.5px;line-height:1.55;color:var(--ink);}
+  .reply-actions{display:flex;gap:16px;font-size:12px;color:var(--ink-faint);}
+  .vote{display:inline-flex;align-items:center;gap:5px;}
+  .vote.best{color:var(--success);font-weight:600;}
+
+  /* ---------- IA assistant ---------- */
+  .ia-panel{
+    background:linear-gradient(160deg,#1c1440,#221a52);
+    border-radius:var(--radius-l);padding:48px;color:#fff;
+    display:grid;grid-template-columns:0.9fr 1.1fr;gap:44px;align-items:center;
+  }
+  @media (max-width:860px){.ia-panel{grid-template-columns:1fr;padding:32px;}}
+  .ia-panel h3{font-size:27px;font-weight:600;line-height:1.2;}
+  .ia-panel p{color:#c7c2e8;font-size:14.5px;margin-top:14px;line-height:1.6;}
+  .ia-chat{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:24px;}
+  .ia-msg{display:flex;gap:10px;margin-bottom:16px;}
+  .ia-msg:last-child{margin-bottom:0;}
+  .ia-bubble{
+    background:rgba(255,255,255,0.08);border-radius:12px;padding:11px 15px;font-size:13.5px;color:#e8e5fb;line-height:1.5;
+  }
+  .ia-msg.user .ia-bubble{background:linear-gradient(135deg,var(--violet),var(--blue));color:#fff;margin-left:auto;}
+  .ia-msg.user{justify-content:flex-end;}
+  .ia-prompts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+  .ia-prompts span{
+    font-size:11.5px;padding:6px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);color:#d8d5f5;
+  }
+
+  /* ---------- pricing ---------- */
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  @media (max-width:720px){.price-grid{grid-template-columns:1fr;}}
+  .price-card{padding:36px;position:relative;}
+  .price-card.premium{border-color:var(--violet);box-shadow:var(--shadow-sm);}
+  .price-badge{position:absolute;top:-13px;right:32px;}
+  .price-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
+  .price-head h4{font-size:19px;font-weight:600;}
+  .price-num{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;}
+  .price-num span{font-size:14px;color:var(--ink-faint);font-weight:500;font-family:'Inter',sans-serif;}
+  .price-list{list-style:none;padding:0;margin:0 0 28px;}
+  .price-list li{display:flex;gap:10px;padding:8px 0;font-size:14px;color:var(--ink-soft);align-items:flex-start;}
+  .price-list li .chk{color:var(--violet);flex-shrink:0;font-weight:700;}
+  .ads-note{margin-top:24px;font-size:12.5px;color:var(--ink-faint);text-align:center;}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--bg-soft);}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;margin-bottom:40px;}
+  .foot-cols{display:flex;gap:64px;flex-wrap:wrap;}
+  .foot-col h5{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-faint);margin-bottom:14px;font-family:'IBM Plex Mono',monospace;}
+  .foot-col a{display:block;font-size:14px;color:var(--ink-soft);margin-bottom:10px;}
+  .foot-col a:hover{color:var(--violet-deep);}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--ink-faint);border-top:1px solid var(--line);padding-top:24px;}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    .stack-card{animation:none;opacity:1;}
+    html{scroll-behavior:auto;}
+  }
+  a:focus-visible, button:focus-visible{outline:2px solid var(--violet);outline-offset:2px;}
+
+  /* ---------- auth modal ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(24,20,51,0.5);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:200;padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:#fff;border-radius:var(--radius-l);padding:36px;width:100%;max-width:400px;
+    box-shadow:var(--shadow);position:relative;max-height:90vh;overflow-y:auto;
+  }
+  .modal-close{
+    position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:50%;
+    border:none;background:var(--bg-soft);color:var(--ink-soft);cursor:pointer;font-size:16px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .modal-close:hover{background:var(--violet-pale);color:var(--violet-deep);}
+  .modal-box h3{font-size:22px;font-weight:600;margin-bottom:6px;}
+  .modal-box .modal-sub{font-size:13.5px;color:var(--ink-soft);margin-bottom:24px;}
+  .modal-field{margin-bottom:16px;}
+  .modal-field label{display:block;font-size:12.5px;font-weight:500;color:var(--ink-soft);margin-bottom:6px;}
+  .modal-field input{
+    width:100%;padding:11px 14px;border-radius:var(--radius-s);border:1.5px solid var(--line);
+    font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);background:var(--bg-soft);
+  }
+  .modal-field input:focus{outline:none;border-color:var(--violet);background:#fff;}
+  .modal-error{font-size:12.5px;color:#c73a3a;margin:-8px 0 14px;display:none;}
+  .modal-error.show{display:block;}
+  .modal-box .btn{width:100%;margin-top:6px;}
+  .modal-switch{font-size:13px;color:var(--ink-soft);text-align:center;margin-top:20px;}
+  .modal-switch a{color:var(--violet-deep);font-weight:600;cursor:pointer;}
+  .modal-success{text-align:center;padding:12px 0;}
+  .modal-success .ok-icon{
+    width:56px;height:56px;border-radius:50%;background:var(--success-pale);color:var(--success);
+    display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px;
+  }
+  .modal-success h3{margin-bottom:8px;}
+  .modal-success p{font-size:14px;color:var(--ink-soft);line-height:1.5;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-mark"></span>StudentHub</div>
+    <div class="nav-links">
+      <a href="#accueil">Accueil</a>
+      <a href="#cours">Cours</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#planning">Planning</a>
+      <a href="#forum">Forum</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#" class="btn btn-ghost btn-sm js-auth" data-mode="login">Se connecter</a>
+      <a href="#" class="btn btn-primary btn-sm js-auth" data-mode="signup">Créer un compte</a>
+    </div>
+    <button class="menu-btn" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span><i></i></span>
+    </button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a class="mm-link" href="#accueil">Accueil</a>
+    <a class="mm-link" href="#cours">Cours</a>
+    <a class="mm-link" href="#quiz">Quiz</a>
+    <a class="mm-link" href="#planning">Planning</a>
+    <a class="mm-link" href="#forum">Forum</a>
+    <div class="mm-actions">
+      <a href="#" class="btn btn-ghost btn-sm js-auth" data-mode="login">Se connecter</a>
+      <a href="#" class="btn btn-primary btn-sm js-auth" data-mode="signup">Créer un compte</a>
+    </div>
+  </div>
+</header>
+
+<!-- 1. ACCUEIL -->
+<section class="hero" id="accueil">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>Fait pour les étudiants, par des étudiants</span>
+        <h1>Ton univers étudiant,<br><em>au même endroit.</em></h1>
+        <p class="lead">Cours, quiz, planning et entraide réunis dans un seul espace. Organise ton semestre sans jongler entre dix applications différentes.</p>
+        <div class="hero-cta">
+          <a href="#" class="btn btn-primary js-auth" data-mode="signup">Commencer gratuitement</a>
+          <a href="#dashboard" class="btn btn-ghost">Voir le tableau de bord →</a>
+        </div>
+        <p class="hero-note">Gratuit pour commencer. Aucune carte bancaire requise.</p>
+      </div>
+
+      <div class="stack">
+        <div class="stack-card main">
+          <div class="stack-title">AUJOURD'HUI</div>
+          <div class="stack-row"><span>Économie — Chapitre 4</span><span class="pill" style="background:var(--blue-pale);color:var(--blue);">Cours</span></div>
+          <div class="stack-row"><span>Devoir de statistiques</span><span class="pill" style="background:var(--amber-pale);color:var(--amber);">Rendu 18h</span></div>
+          <div class="stack-row"><span>Quiz — Droit civil</span><span class="pill" style="background:var(--violet-pale);color:var(--violet-deep);">10 questions</span></div>
+        </div>
+        <div class="stack-card mini">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div class="ring"><div class="ring-inner">68%</div></div>
+            <div>
+              <div style="font-size:12px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;">PROGRESSION</div>
+              <div style="font-size:13.5px;font-weight:600;margin-top:2px;">Semestre 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="stack-card sub">
+          <div class="stack-title" style="color:var(--violet-deep);">PROCHAIN EXAMEN</div>
+          <div style="font-size:15px;font-weight:600;">Analyse macro­économique</div>
+          <div style="font-size:12.5px;color:var(--violet-deep);margin-top:4px;">Dans 6 jours</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-features reveal">
+      <div class="qf-item">
+        <div class="ic">📚</div>
+        <h4>Cours &amp; fiches</h4>
+        <p>PDF, résumés et exercices classés par matière.</p>
+      </div>
+      <div class="qf-item">
+        <div class="ic">✅</div>
+        <h4>Quiz corrigés</h4>
+        <p>Un score immédiat et des explications sur chaque erreur.</p>
+      </div>
+      <div class="qf-item">
+        <div class="ic">🗓️</div>
+        <h4>Planning</h4>
+        <p>Cours, devoirs et examens avec rappels automatiques.</p>
+      </div>
+      <div class="qf-item">
+        <div class="ic">💬</div>
+        <h4>Forum d'entraide</h4>
+        <p>Pose une question, un autre étudiant y répond.</p>
+      </div>
+      <div class="qf-item">
+        <div class="ic">✨</div>
+        <h4>Assistant IA</h4>
+        <p>Fais expliquer, résumer ou tester un chapitre en un clic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. TABLEAU DE BORD -->
+<section id="dashboard">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Tableau de bord</span>
+      <h2>Après connexion, tout est déjà prêt.</h2>
+      <p>Un aperçu clair de la journée, sans avoir à chercher.</p>
+    </div>
+
+    <div class="dash-shell reveal">
+      <div class="dash-greet">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div class="avatar">SL</div>
+          <div>
+            <h3>Bonjour Sarah 👋</h3>
+            <p>Voici ce qui t'attend aujourd'hui.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-card">
+          <div class="label">MES COURS</div>
+          <ul class="mini-list">
+            <li><span>Économie</span><span>09:00</span></li>
+            <li><span>Droit civil</span><span>14:00</span></li>
+            <li><span>Statistiques</span><span>16:30</span></li>
+          </ul>
+        </div>
+        <div class="dash-card">
+          <div class="label">MES DEVOIRS</div>
+          <ul class="mini-list">
+            <li><span>Fiche macro­éco</span><span>Demain</span></li>
+            <li><span>Étude de cas</span><span>3 j</span></li>
+          </ul>
+        </div>
+        <div class="dash-card">
+          <div class="label">QUIZ À FAIRE</div>
+          <div class="big">Droit civil — Ch.3</div>
+          <div class="sub">10 questions · ~8 min</div>
+        </div>
+        <div class="dash-card">
+          <div class="label">PROCHAIN EXAMEN</div>
+          <div class="big">Analyse macro­éco</div>
+          <div class="sub">Dans 6 jours</div>
+        </div>
+        <div class="dash-card wide">
+          <div class="label">PROGRESSION DU SEMESTRE</div>
+          <div class="big">68% du programme complété</div>
+          <div class="bar-track"><div class="bar-fill" style="width:68%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. COURS -->
+<section id="cours" style="background:var(--bg-soft);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Cours</span>
+      <h2>Trouve ta matière en trois clics.</h2>
+      <p>Université → Faculté → Niveau → Matière. Puis choisis le type de ressource dont tu as besoin.</p>
+    </div>
+
+    <div class="breadcrumb-select reveal">
+      <div class="bc-step active">Université de Bordeaux</div>
+      <span class="bc-arrow">→</span>
+      <div class="bc-step">Faculté d'économie</div>
+      <span class="bc-arrow">→</span>
+      <div class="bc-step">Licence 2</div>
+      <span class="bc-arrow">→</span>
+      <div class="bc-step">Macroéconomie</div>
+    </div>
+
+    <div class="resource-grid reveal">
+      <div class="card resource-card">
+        <div class="r-ic">PDF</div>
+        <h4>Cours PDF</h4>
+        <p>12 documents</p>
+      </div>
+      <div class="card resource-card">
+        <div class="r-ic">RÉS</div>
+        <h4>Résumés</h4>
+        <p>8 documents</p>
+      </div>
+      <div class="card resource-card">
+        <div class="r-ic">FCH</div>
+        <h4>Fiches</h4>
+        <p>15 documents</p>
+      </div>
+      <div class="card resource-card">
+        <div class="r-ic">EX</div>
+        <h4>Exercices</h4>
+        <p>20 documents</p>
+      </div>
+      <div class="card resource-card">
+        <div class="r-ic">EXM</div>
+        <h4>Anciens examens</h4>
+        <p>6 documents</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. QUIZ -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Quiz</span>
+      <h2>Teste-toi, puis comprends tes erreurs.</h2>
+      <p>Choisis la matière, le chapitre et la difficulté. Chaque erreur est expliquée, pas juste signalée.</p>
+    </div>
+
+    <div class="quiz-panel reveal">
+      <div class="quiz-config">
+        <h4>Configurer le quiz</h4>
+        <div class="quiz-field">
+          <label>Matière</label>
+          <div class="quiz-chip-row">
+            <span class="chip sel">Droit civil</span>
+            <span class="chip">Économie</span>
+            <span class="chip">Statistiques</span>
+          </div>
+        </div>
+        <div class="quiz-field">
+          <label>Chapitre</label>
+          <div class="quiz-chip-row">
+            <span class="chip">Ch.1 — Les personnes</span>
+            <span class="chip sel">Ch.3 — Les contrats</span>
+          </div>
+        </div>
+        <div class="quiz-field">
+          <label>Difficulté</label>
+          <div class="quiz-chip-row">
+            <span class="chip">Facile</span>
+            <span class="chip sel">Moyen</span>
+            <span class="chip">Difficile</span>
+          </div>
+        </div>
+        <a href="#" class="btn btn-primary btn-sm" style="margin-top:6px;">Lancer le quiz</a>
+      </div>
+
+      <div class="quiz-result">
+        <div class="score-row">
+          <div class="score-ring"><div class="score-ring-inner"><span class="n">17/20</span><span class="d">SCORE</span></div></div>
+          <div class="score-meta">
+            <h4>Bien joué, Sarah.</h4>
+            <p>3 réponses à revoir avant l'examen.</p>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-q">Un contrat unilatéral engage :</div>
+          <div class="review-a"><span class="x">✕</span> Ta réponse : les deux parties</div>
+          <div class="review-a"><span class="ok">✓</span> Bonne réponse : une seule partie</div>
+          <div class="review-why">Dans un contrat unilatéral, une seule partie s'engage envers l'autre, qui n'a aucune obligation en retour.</div>
+        </div>
+        <div class="review-item">
+          <div class="review-q">La nullité relative protège :</div>
+          <div class="review-a"><span class="x">✕</span> Ta réponse : l'intérêt général</div>
+          <div class="review-a"><span class="ok">✓</span> Bonne réponse : un intérêt particulier</div>
+          <div class="review-why">Elle vise à protéger une personne précise, qui est la seule à pouvoir demander l'annulation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. PLANNING -->
+<section id="planning" style="background:var(--bg-soft);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Planning</span>
+      <h2>Un calendrier qui pense aux échéances à ta place.</h2>
+      <p>Cours, devoirs, examens et dates limites, avec des rappels envoyés avant qu'il ne soit trop tard.</p>
+    </div>
+
+    <div class="plan-grid reveal">
+      <div class="card cal">
+        <div class="cal-head">
+          <h4>Octobre 2026</h4>
+          <div class="cal-nav"><button aria-label="Mois précédent">‹</button><button aria-label="Mois suivant">›</button></div>
+        </div>
+        <div class="cal-days"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+        <div class="cal-cells" id="cal-cells"></div>
+        <div class="legend">
+          <span><i style="background:var(--blue);"></i>Cours</span>
+          <span><i style="background:var(--violet);"></i>Devoirs</span>
+          <span><i style="background:#c73a3a;"></i>Examens</span>
+          <span><i style="background:var(--amber);"></i>Dates limites</span>
+        </div>
+      </div>
+
+      <div class="card reminder-card">
+        <h4>Rappels automatiques</h4>
+        <div class="reminder-item">
+          <span class="reminder-dot" style="background:var(--amber);"></span>
+          <div><p>Devoir de statistiques à rendre</p><span>Aujourd'hui, 18h00</span></div>
+        </div>
+        <div class="reminder-item">
+          <span class="reminder-dot" style="background:#c73a3a;"></span>
+          <div><p>Examen d'analyse macroéconomique</p><span>Dans 6 jours</span></div>
+        </div>
+        <div class="reminder-item">
+          <span class="reminder-dot" style="background:var(--violet);"></span>
+          <div><p>Fiche de lecture — Droit civil</p><span>Dans 3 jours</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FORUM -->
+<section id="forum">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Forum</span>
+      <h2>Coincé sur un chapitre ? Quelqu'un l'a déjà expliqué.</h2>
+      <p>Pose ta question, réponds à celle d'un autre, et fais monter les meilleures explications par le vote.</p>
+    </div>
+
+    <div class="card thread reveal">
+      <div class="thread-head">
+        <div class="avatar">TM</div>
+        <div class="thread-body">
+          <h4>Quelqu'un peut m'expliquer ce chapitre ?</h4>
+          <div class="thread-meta">Théo M. · Macroéconomie, Ch.4 · il y a 2h</div>
+          <p class="thread-question">Je ne comprends pas la différence entre inflation par la demande et par les coûts. Le cours passe vite dessus et je bloque sur l'exercice 3.</p>
+
+          <div class="reply">
+            <div class="avatar" style="background:linear-gradient(135deg,var(--success),var(--blue));">NL</div>
+            <div class="reply-body">
+              <p>L'inflation par la demande vient d'une hausse de la consommation trop forte pour l'offre disponible. Celle par les coûts vient d'une hausse des coûts de production (matières premières, salaires) répercutée sur les prix.</p>
+              <div class="reply-actions"><span class="vote best">▲ 24 · Réponse retenue</span><span>Répondre</span></div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="avatar" style="background:linear-gradient(135deg,var(--amber),#e0532c);">JK</div>
+            <div class="reply-body">
+              <p>Pour l'exercice 3, regarde si la hausse des prix vient avant ou après la hausse des salaires : ça te dit de quel côté tu es.</p>
+              <div class="reply-actions"><span class="vote">▲ 9</span><span>Répondre</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. ASSISTANT IA -->
+<section id="ia" style="background:var(--bg-soft);">
+  <div class="wrap">
+    <div class="ia-panel reveal">
+      <div>
+        <span class="eyebrow" style="background:rgba(255,255,255,0.1);color:#c7c2e8;">Assistant IA</span>
+        <h3>Un coup de main quand le cours ne suffit pas.</h3>
+        <p>Demande une explication simple, un résumé ou un quiz d'entraînement, directement sur ton document de cours.</p>
+        <div class="ia-prompts">
+          <span>Explique-moi ce cours simplement</span>
+          <span>Fais-moi 10 QCM sur ce chapitre</span>
+          <span>Résume ce document</span>
+        </div>
+      </div>
+      <div class="ia-chat">
+        <div class="ia-msg user"><div class="ia-bubble">Fais-moi 10 QCM sur ce chapitre.</div></div>
+        <div class="ia-msg"><div class="ia-bubble">C'est parti. Je génère 10 questions sur « Les contrats », classées de la plus simple à la plus technique. Tu veux les corrections affichées à la fin ou après chaque question ?</div></div>
+        <div class="ia-msg user"><div class="ia-bubble">À la fin, comme d'habitude.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONÉTISATION -->
+<section id="tarifs">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Tarifs</span>
+      <h2>Gratuit pour étudier. Premium pour aller plus vite.</h2>
+      <p>L'essentiel reste gratuit. Le Premium ajoute l'IA et des statistiques détaillées, sans engagement.</p>
+    </div>
+
+    <div class="price-grid reveal">
+      <div class="card price-card">
+        <div class="price-head">
+          <div>
+            <h4>Gratuit</h4>
+            <div class="price-num">0€<span> / toujours</span></div>
+          </div>
+        </div>
+        <ul class="price-list">
+          <li><span class="chk">✓</span>Accès aux cours, résumés et fiches</li>
+          <li><span class="chk">✓</span>Forum d'entraide illimité</li>
+          <li><span class="chk">✓</span>Quelques quiz par semaine</li>
+          <li><span class="chk">✓</span>Planning avec rappels</li>
+        </ul>
+        <a href="#" class="btn btn-ghost js-auth" data-mode="signup">Créer un compte gratuit</a>
+      </div>
+
+      <div class="card price-card premium">
+        <span class="price-badge pill" style="background:linear-gradient(135deg,var(--violet),var(--blue));color:#fff;">Le plus choisi</span>
+        <div class="price-head">
+          <div>
+            <h4>Premium</h4>
+            <div class="price-num">6,99€<span> / mois</span></div>
+          </div>
+        </div>
+        <ul class="price-list">
+          <li><span class="chk">✓</span>Tout le contenu gratuit</li>
+          <li><span class="chk">✓</span>Assistant IA illimité</li>
+          <li><span class="chk">✓</span>Quiz illimités sur toutes les matières</li>
+          <li><span class="chk">✓</span>Statistiques de progression avancées</li>
+          <li><span class="chk">✓</span>Fiches personnalisées générées par l'IA</li>
+          <li><span class="chk">✓</span>Aucune publicité</li>
+        </ul>
+        <a href="#" class="btn btn-primary js-auth" data-mode="signup">Passer en Premium</a>
+      </div>
+    </div>
+    <p class="ads-note">La version gratuite affiche une publicité limitée et non intrusive. Le Premium en est totalement exempt.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="logo">
+        <span class="logo-mark"></span>StudentHub
+        <span style="font-family:'Inter';font-weight:400;font-size:13px;color:var(--ink-faint);margin-left:8px;">« Étudie mieux. Organise-toi. Réussis. »</span>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h5>Produit</h5>
+          <a href="#cours">Cours</a>
+          <a href="#quiz">Quiz</a>
+          <a href="#planning">Planning</a>
+          <a href="#forum">Forum</a>
+        </div>
+        <div class="foot-col">
+          <h5>Ressources</h5>
+          <a href="#">Centre d'aide</a>
+          <a href="#">Guides d'utilisation</a>
+          <a href="#">Statut du service</a>
+        </div>
+        <div class="foot-col">
+          <h5>Légal</h5>
+          <a href="#">Confidentialité</a>
+          <a href="#">Conditions d'utilisation</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 StudentHub. Fait pour les étudiants.</span>
+      <span>Bleu, violet, et beaucoup d'espace blanc.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box" id="modal-box" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modal-close" aria-label="Fermer">✕</button>
+
+    <div id="modal-signup">
+      <h3>Créer ton compte</h3>
+      <p class="modal-sub">Gratuit, sans carte bancaire.</p>
+      <form id="form-signup" novalidate>
+        <div class="modal-field">
+          <label for="su-name">Prénom</label>
+          <input type="text" id="su-name" autocomplete="given-name" required>
+        </div>
+        <div class="modal-field">
+          <label for="su-email">Email étudiant</label>
+          <input type="email" id="su-email" autocomplete="email" required>
+        </div>
+        <div class="modal-field">
+          <label for="su-pass">Mot de passe</label>
+          <input type="password" id="su-pass" autocomplete="new-password" minlength="6" required>
+        </div>
+        <p class="modal-error" id="su-error"></p>
+        <button type="submit" class="btn btn-primary">Créer mon compte</button>
+      </form>
+      <p class="modal-switch">Déjà inscrit ? <a id="to-login">Se connecter</a></p>
+    </div>
+
+    <div id="modal-login" style="display:none;">
+      <h3>Content de te revoir</h3>
+      <p class="modal-sub">Connecte-toi pour retrouver ton espace.</p>
+      <form id="form-login" novalidate>
+        <div class="modal-field">
+          <label for="li-email">Email</label>
+          <input type="email" id="li-email" autocomplete="email" required>
+        </div>
+        <div class="modal-field">
+          <label for="li-pass">Mot de passe</label>
+          <input type="password" id="li-pass" autocomplete="current-password" required>
+        </div>
+        <p class="modal-error" id="li-error"></p>
+        <button type="submit" class="btn btn-primary">Se connecter</button>
+      </form>
+      <p class="modal-switch">Pas encore de compte ? <a id="to-signup">Créer un compte</a></p>
+    </div>
+
+    <div id="modal-success" style="display:none;">
+      <div class="modal-success">
+        <div class="ok-icon">✓</div>
+        <h3 id="success-title">Bienvenue !</h3>
+        <p id="success-text">Ton compte a bien été créé.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // build calendar grid
+  const cal = document.getElementById('cal-cells');
+  const daysInMonth = 31, startOffset = 3, today = 14;
+  const events = {5:'blue',9:'violet',12:'blue',14:null,17:'amber',20:'#c73a3a',23:'violet',27:'blue'};
+  for(let i=0;i<startOffset;i++){
+    const c=document.createElement('div'); c.className='cal-cell'; c.style.opacity='0.25'; cal.appendChild(c);
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const c=document.createElement('div');
+    c.className='cal-cell'+(d===today?' today':'');
+    c.textContent=d;
+    if(events[d]){
+      const dot=document.createElement('span'); dot.className='evt';
+      dot.style.background = events[d]==='blue'?'var(--blue)':events[d]==='violet'?'var(--violet)':events[d]==='amber'?'var(--amber)':events[d];
+      c.appendChild(dot);
+    }
+    cal.appendChild(c);
+  }
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // mobile menu
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  function closeMenu(){
+    menuBtn.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click', ()=>{
+    const isOpen = mobileMenu.classList.toggle('open');
+    menuBtn.classList.toggle('open', isOpen);
+    menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+  window.addEventListener('resize', ()=>{ if(window.innerWidth>860) closeMenu(); });
+
+  // ---------- auth modal ----------
+  const overlay = document.getElementById('modal-overlay');
+  const paneSignup = document.getElementById('modal-signup');
+  const paneLogin = document.getElementById('modal-login');
+  const paneSuccess = document.getElementById('modal-success');
+  const registeredUsers = []; // stocké en mémoire pour cette session
+
+  function showPane(pane){
+    [paneSignup, paneLogin, paneSuccess].forEach(p => p.style.display = 'none');
+    pane.style.display = 'block';
+  }
+  function openModal(mode){
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    showPane(mode === 'login' ? paneLogin : paneSignup);
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.js-auth').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      closeMenu();
+      openModal(btn.dataset.mode);
+    });
+  });
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+  document.getElementById('to-login').addEventListener('click', ()=>showPane(paneLogin));
+  document.getElementById('to-signup').addEventListener('click', ()=>showPane(paneSignup));
+
+  function personalizeDashboard(name){
+    const greetTitle = document.querySelector('.dash-greet h3');
+    const greetAvatar = document.querySelector('.dash-greet .avatar');
+    if(greetTitle) greetTitle.textContent = 'Bonjour ' + name + ' 👋';
+    if(greetAvatar) greetAvatar.textContent = name.slice(0,2).toUpperCase();
+  }
+
+  document.getElementById('form-signup').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = document.getElementById('su-name').value.trim();
+    const email = document.getElementById('su-email').value.trim();
+    const pass = document.getElementById('su-pass').value;
+    const err = document.getElementById('su-error');
+    if(!name || !email || pass.length < 6){
+      err.textContent = 'Vérifie ton prénom, ton email et un mot de passe d\'au moins 6 caractères.';
+      err.classList.add('show');
+      return;
+    }
+    if(registeredUsers.some(u=>u.email === email)){
+      err.textContent = 'Un compte existe déjà avec cet email.';
+      err.classList.add('show');
+      return;
+    }
+    err.classList.remove('show');
+    registeredUsers.push({name, email, pass});
+    personalizeDashboard(name);
+    document.getElementById('success-title').textContent = 'Bienvenue, ' + name + ' !';
+    document.getElementById('success-text').textContent = 'Ton compte a bien été créé. Ton tableau de bord t\'attend juste en dessous.';
+    showPane(paneSuccess);
+    setTimeout(()=>{
+      closeModal();
+      document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
+    }, 1400);
+  });
+
+  document.getElementById('form-login').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const email = document.getElementById('li-email').value.trim();
+    const pass = document.getElementById('li-pass').value;
+    const err = document.getElementById('li-error');
+    const user = registeredUsers.find(u=>u.email === email && u.pass === pass);
+    if(!user){
+      err.textContent = registeredUsers.length
+        ? 'Email ou mot de passe incorrect.'
+        : 'Aucun compte trouvé — crée d\'abord un compte.';
+      err.classList.add('show');
+      return;
+    }
+    err.classList.remove('show');
+    personalizeDashboard(user.name);
+    document.getElementById('success-title').textContent = 'Content de te revoir, ' + user.name + ' !';
+    document.getElementById('success-text').textContent = 'Tu es connecté(e).';
+    showPane(paneSuccess);
+    setTimeout(()=>{
+      closeModal();
+      document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
+    }, 1200);
+  });
+</script>
+
+</body>
+</html>
